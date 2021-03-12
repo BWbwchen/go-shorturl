@@ -2,17 +2,32 @@ package database
 
 import (
 	"fmt"
+	"os"
 	. "shorturl/model"
 
+	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
 // DB global database
 var DB *gorm.DB
-var dsn string = "host=host user=user password=password dbname=dbname port=port sslmode=disable TimeZone=Asia/Taipei"
 
 func init() {
+	// load environment variable
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+
+	HOST := os.Getenv("HOST")
+	DBUSER := os.Getenv("DBUSER")
+	PASSWORD := os.Getenv("PASSWORD")
+	DBNAME := os.Getenv("DBNAME")
+	PORT := os.Getenv("PORT")
+
+	var dsn string = fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable TimeZone=Asia/Taipei", HOST, DBUSER, PASSWORD, DBNAME, PORT)
+
 	bb, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	DB = bb
 
