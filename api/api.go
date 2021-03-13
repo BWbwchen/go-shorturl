@@ -14,7 +14,7 @@ func HandleRedirect(c *gin.Context) {
 
 	URL, stateCode := database.Find(shortName)
 	if stateCode == model.NotFound {
-		c.JSON(http.StatusOK, util.SendResponse(100, "result_not_found"))
+		c.Redirect(http.StatusMovedPermanently, "/")
 		return
 	}
 

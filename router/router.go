@@ -16,7 +16,12 @@ func InitRouter() *gin.Engine {
 	r.Use(static.Serve("/", static.LocalFile("./dist", true)))
 
 	r.GET("/:shortname", api.HandleRedirect)
-	r.POST("/api", api.AddShortName)
+
+	s := r.Group("/api")
+	{
+		s.POST("/", api.AddShortName)
+		//s.GET("/login", api.LoginHandler)
+	}
 
 	return r
 }
