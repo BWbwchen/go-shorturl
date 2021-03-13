@@ -63,6 +63,11 @@ func LoginHandler(c *gin.Context) {
 	}
 	err := c.ShouldBindJSON(&body)
 	if err != nil {
+		/*
+			fmt.Println(c.GetRawData())
+			fmt.Println(c.PostForm("account"), c.PostForm("password"))
+			fmt.Println(err.Error(), body)
+		*/
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -80,7 +85,7 @@ func LoginHandler(c *gin.Context) {
 			Account: body.Account,
 			StandardClaims: jwt.StandardClaims{
 				Audience:  body.Account,
-				ExpiresAt: now.Add(20 * time.Minute).Unix(),
+				ExpiresAt: now.Add(20 * time.Second).Unix(),
 				Id:        jwtId,
 				IssuedAt:  now.Unix(),
 				Issuer:    "ginJWT",
