@@ -17,10 +17,13 @@ func InitRouter() *gin.Engine {
 
 	r.GET("/:shortname", api.HandleRedirect)
 
-	s := r.Group("/api")
+	r.POST("/api/login", api.LoginHandler)
+
+	// need login to generate short name
+	authorized := r.Group("/api")
+	authorized.Use(api.AuthRequired)
 	{
-		s.POST("/", api.AddShortName)
-		//s.GET("/login", api.LoginHandler)
+		authorized.POST("/", api.AddShortName)
 	}
 
 	return r
